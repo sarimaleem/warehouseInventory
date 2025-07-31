@@ -1,0 +1,4 @@
+.vscode/
+warehouse .session.sql
+backend/setup_venv.sh
+backend/tests/
