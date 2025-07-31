@@ -8,12 +8,17 @@ A simple Gin-based REST API backend for the warehouse inventory system.
 
 ## Quick Start
 
-1. **Run the backend using the script:**
+1. **Generate SQL code (required after schema changes):**
+   ```bash
+   sqlc generate
+   ```
+
+2. **Run the backend using the script:**
    ```bash
    ./scripts.sh
    ```
 
-2. **Or run manually:**
+3. **Or run manually:**
    ```bash
    go mod tidy
    go run main.go
