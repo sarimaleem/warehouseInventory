@@ -60,92 +60,92 @@ export default function BaseTableInventoryTable(){
             'binlocation':'12',
             'stock':'12',
             'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
+        },{
+            'productCode':'prdctcode',
+            'description': '22',
+            'catagories':'12',
+            'binlocation':'12',
+            'stock':'12',
+            'price':'12',
         }
-        ,{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },{
-            'productCode':'prdctcode',
-            'description': '22',
-            'catagories':'12',
-            'binlocation':'12',
-            'stock':'12',
-            'price':'12',
-        },
+
     ]
 
     const columns: {key:string, name:string,width:number}[] = [
@@ -158,6 +158,5 @@ export default function BaseTableInventoryTable(){
 
     ]
 
-    return(
-        <BaseTable rows={rows} columns={columns}/>)
+    return <BaseTable rows={rows} columns={columns}/>
 }

@@ -1,12 +1,16 @@
-import {useEffect, useRef, useState} from "react";
+import {useLayoutEffect, useRef, useState} from "react";
+import BaseTableHeader from "./BaseTableHeader.tsx";
+import BaseTableFooter from "./BaseTableFooter.tsx";
+import BaseTableBody from "./BaseTableBody.tsx";
+import {ScrollSyncProvider} from "../context/ScrollSyncProvider.tsx";
 
-type BaseTableColumns = {
+export type BaseTableColumns = {
     key:string
     name:string
     width:number
 }
 
-type BaseTableRow = Record<string, string>
+export type BaseTableRow = Record<string, string>
 
 
 interface BaseTableProps{
@@ -20,7 +24,7 @@ interface BaseTableCellProps{
     width:number
 }
 
-function BaseTableCell({text, color, width}:BaseTableCellProps){
+export function BaseTableCell({text, color, width}:BaseTableCellProps){
     return(
         <div style={{
             minWidth: width,
@@ -34,60 +38,12 @@ function BaseTableCell({text, color, width}:BaseTableCellProps){
     )
 }
 
-
-
-interface BaseTableHeaderProps{
-    columns:BaseTableColumns[]
-}
-
-function BaseTableHeader({columns}:BaseTableHeaderProps){
-
-    return(
-        <div style={{
-            color: '#9B9B9B',
-            backgroundColor:'#F5F5F5',
-            borderRadius:`10px 10px 0px 0px`,
-            borderWidth: `0px 1px 0px 0px`,
-            borderStyle: 'solid',
-            borderColor:'#BCBCBC'
-        }} className={"flex flex-row w-full  "}>
-            {columns.map((column)=><BaseTableCell
-                color={'#F5F5F5'}
-                text={column.name}
-                width={column.width}
-            />)}
-        </div>
-    )
-}
-
-interface BaseTableRowProps{
-    row:BaseTableRow
-    columns:BaseTableColumns[]
-}
-
-
-function BaseTableRow({row, columns}:BaseTableRowProps){
-    return(
-        <div style={{
-            borderStyle: 'solid',
-            borderColor:'#BCBCBC'
-        }} className={"flex flex-row  bg-white"}>
-            {columns.map((column)=><BaseTableCell
-                color={'#ffffff'}
-                text={row[column.key]}
-                width={column.width}
-            />)}
-        </div>
-    )
-}
-
-
 export default function BaseTable({columns, rows}:BaseTableProps) {
 
     const divRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState(0);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (divRef.current) {
             const height = divRef.current.offsetHeight;
             console.log('Height:', height);
@@ -95,66 +51,13 @@ export default function BaseTable({columns, rows}:BaseTableProps) {
         }
     }, []);
 
-
-    const divARef = useRef<HTMLDivElement>(null);
-    const divBRef = useRef<HTMLDivElement>(null);
-    const isSyncingRef = useRef(false);
-
-    useEffect(() => {
-        const divA = divARef.current;
-        const divB = divBRef.current;
-        if (!divA || !divB) return;
-
-        const syncScroll = (
-            source: HTMLDivElement,
-            target: HTMLDivElement
-        ) => {
-            if (isSyncingRef.current) return;
-            isSyncingRef.current = true;
-            target.scrollLeft = source.scrollLeft;
-            isSyncingRef.current = false;
-        };
-
-        const onScrollA = () => syncScroll(divA, divB);
-        const onScrollB = () => syncScroll(divB, divA);
-
-        divA.addEventListener("scroll", onScrollA);
-        divB.addEventListener("scroll", onScrollB);
-
-        return () => {
-            divA.removeEventListener("scroll", onScrollA);
-            divB.removeEventListener("scroll", onScrollB);
-        };
-    }, []);
-
-
     return(
-        <div  ref={divRef} className={`flex h-full flex-col w-full  `}>
-            <div style={{
-                borderColor: '#BCBCBC',
-                borderWidth: '1px 1px 0px 1px ',
-                borderStyle: 'solid',
-                scrollbarWidth: "none", // Firefox
-                msOverflowStyle: "none", // IE/Edge
-            }} className={'flex w-full flex-col overflow-scroll whitespace-nowrap rounded-t-lg'} ref={divARef}>
+        <ScrollSyncProvider>
+            <div ref={divRef} className={`flex h-full flex-col w-full  `}>
                 <BaseTableHeader columns={columns}/>
+                <BaseTableBody rows={rows} columns={columns} height={height}/>
+                <BaseTableFooter/>
             </div>
-            <div style={{
-                borderColor: '#BCBCBC',
-                borderWidth: '0px 1px 0px 1px ',
-                borderStyle: 'solid',
-                maxHeight: height -175
-            }} className={'w-full  overflow-y-auto'}  ref={divBRef}>
-                {
-                    rows.map(row => <BaseTableRow row={row} columns={columns}/>)
-                }
-            </div>
-            <div style={{
-                borderColor: '#BCBCBC',
-                borderWidth: '0px 1px  1px 1px ',
-                borderStyle: 'solid',
-            }} className={'flex w-full flex-col  min-h-20 overflow-scroll rounded-b-lg'}>
-            </div>
-        </div>
+        </ScrollSyncProvider>
     )
 }
