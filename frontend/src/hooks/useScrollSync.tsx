@@ -35,7 +35,7 @@ export default function useScrollSync(){
             divA.removeEventListener("scroll", onScrollA);
             divB.removeEventListener("scroll", onScrollB);
         };
-    }, []);
+    }, [context.divARef, context.divBRef]);
 
     return { divARef: context.divARef, divBRef: context.divBRef }
 }

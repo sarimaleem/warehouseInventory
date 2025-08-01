@@ -22,17 +22,30 @@ interface BaseTableCellProps{
     color:string
     text:string
     width:number
+    hoverable?: true
 }
 
-export function BaseTableCell({text, color, width}:BaseTableCellProps){
+export function BaseTableCell({text, color, width, hoverable }:BaseTableCellProps){
+
+    const [isOnHover, setIsOnHover] = useState(false);
+
+    const handleMouseHoverActive = () =>{
+        setIsOnHover(true)
+    }
+    const handleMouseHoverEnd = () =>{
+        setIsOnHover(false)
+    }
+
     return(
-        <div style={{
-            minWidth: width,
-            backgroundColor:color,
-            borderWidth: `0px 1px 1px 0px`,
-            borderStyle: 'solid',
-            borderColor:'#BCBCBC'
-        }} className={"flex w-full bg-blue-500 p-3 bg-white"}>
+        <div onMouseEnter={handleMouseHoverActive}
+             onMouseLeave={handleMouseHoverEnd}
+             style={{
+                 minWidth: width,
+                 backgroundColor:hoverable&&isOnHover?'#dedede':color,
+                 borderWidth: `0px 1px 1px 0px`,
+                 borderStyle: 'solid',
+                 borderColor:'#BCBCBC'}}
+             className={"flex w-full bg-blue-500 p-3 bg-white"}>
             {text}
         </div>
     )

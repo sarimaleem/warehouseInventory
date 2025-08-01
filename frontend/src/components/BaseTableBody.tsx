@@ -1,5 +1,6 @@
 import {BaseTableCell, type BaseTableColumns, type BaseTableRow} from "./BaseTable.tsx";
 import useScrollSync from "../hooks/useScrollSync.tsx";
+import {useState} from "react";
 
 
 
@@ -10,16 +11,26 @@ interface BaseTableRowProps{
 
 
 function BaseTableRow({row, columns}:BaseTableRowProps){
+
+    const [isOnHover, setIsOnHover] = useState(false);
+
+    const handleMouseHoverActive = () =>{
+        setIsOnHover(true)
+    }
+    const handleMouseHoverEnd = () =>{
+        setIsOnHover(false)
+    }
+
     return(
-        <div style={{
-            borderStyle: 'solid',
-            borderColor:'#BCBCBC'
-        }} className={"flex flex-row  bg-white"}>
-            {columns.map((column)=><BaseTableCell
-                color={'#ffffff'}
-                text={row[column.key]}
-                width={column.width}
-            />)}
+        <div onMouseEnter={handleMouseHoverActive}
+             onMouseLeave={handleMouseHoverEnd}
+             style={{borderStyle: 'solid', borderColor:'#BCBCBC'}}
+             className={"flex flex-row  bg-white"}>{columns.map((column)=>(
+                 <BaseTableCell
+                     color={isOnHover?'#ececec':'#ffffff'}
+                     text={row[column.key]}
+                     width={column.width} hoverable
+                 />))}
         </div>
     )
 }
