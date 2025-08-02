@@ -1,16 +1,17 @@
-import {type ReactNode} from 'react';
-import {ModalControlContext} from "./ModalControlContext.tsx";
+import { type ReactNode } from "react";
+import { ModalControlContext } from "./ModalControlContext.tsx";
 
-interface ModalControlProviderProps{
-    doClose:()=>void;
-    children:ReactNode;
+interface ModalControlProviderProps {
+  doClose: () => void;
+  children: ReactNode;
 }
-export const ModalControlProvider = ({doClose, children }:ModalControlProviderProps) => {
-    return (
-        <ModalControlContext.Provider value={{doClose}}>
-            {children}
-        </ModalControlContext.Provider>
-    );
+export const ModalControlProvider = ({
+  doClose,
+  children,
+}: ModalControlProviderProps) => {
+  return (
+    <ModalControlContext.Provider value={{ doClose }}>
+      {children}
+    </ModalControlContext.Provider>
+  );
 };
-
-

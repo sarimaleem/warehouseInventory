@@ -30,8 +30,6 @@ func connectToDatabase() (*sql.DB, error) {
 	return database, nil
 }
 func main() {
-	fmt.Println("SARIM ALEEM was here")
-
 	// Connect to database
 	database, err := connectToDatabase()
 	if err != nil {

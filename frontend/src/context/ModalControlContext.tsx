@@ -1,8 +1,9 @@
-import {createContext} from "react";
+import { createContext } from "react";
 
 export type ModalControl = {
-    doClose:()=>void
+  doClose: () => void;
 };
 
-
-export const ModalControlContext = createContext<ModalControl | undefined>(undefined);
+export const ModalControlContext = createContext<ModalControl | undefined>(
+  undefined,
+);
