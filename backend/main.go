@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 
 	"warehouse-inventory-backend/db"
 	"warehouse-inventory-backend/handlers"
@@ -12,15 +14,31 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func main() {
-	// Connect to database
-	database, err := sql.Open("postgres", "postgres://sarimaleem:meme@localhost:5432/inventorydb?sslmode=disable")
+func connectToDatabase() (*sql.DB, error) {
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+
+	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%s/inventorydb?sslmode=disable", username, password, host, port)
+
+	database, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		return nil, err
+	}
+
+	return database, nil
+}
+func main() {
+	fmt.Println("SARIM ALEEM was here")
+
+	// Connect to database
+	database, err := connectToDatabase()
+	if err != nil {
+		log.Fatal("failed to connect to database", err)
 	}
 	defer database.Close()
 
-	// Test database connection
 	if err := database.Ping(); err != nil {
 		log.Fatal("Failed to ping database:", err)
 	}
