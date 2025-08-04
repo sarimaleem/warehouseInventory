@@ -18,23 +18,15 @@ cd "$(dirname "$0")"
 echo "📦 Downloading dependencies..."
 go mod tidy
 
-# Build the application
-echo "🔨 Building the application..."
-go build -o warehouse-backend main.go
-
 # Check if build was successful
 if [ $? -eq 0 ]; then
     echo "✅ Build successful!"
     echo "🌐 Starting server on http://localhost:8080"
-    echo "📋 Available endpoints:"
-    echo "   - GET / (Hello World)"
-    echo "   - GET /health (Health Check)"
-    echo ""
     echo "Press Ctrl+C to stop the server"
     echo ""
     
     # Run the server
-    ./warehouse-backend
+    go run main.go
 else
     echo "❌ Build failed!"
     exit 1

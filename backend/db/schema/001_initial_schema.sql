@@ -2,7 +2,12 @@
 CREATE TABLE IF NOT EXISTS inventory (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    quantity INT NOT NULL,
+    product_code VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    categories VARCHAR(255) NOT NULL,
+    binlocation VARCHAR(255) NOT NULL,
+    stock INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -2,3 +2,6 @@
 warehouse .session.sql
 backend/setup_venv.sh
 backend/tests/
+frontend/node_modules/
+frontend/.env
+backend/.env

@@ -9,9 +9,14 @@ import (
 )
 
 type Inventory struct {
-	ID        int32        `json:"id"`
-	Name      string       `json:"name"`
-	Quantity  int32        `json:"quantity"`
-	CreatedAt sql.NullTime `json:"created_at"`
-	UpdatedAt sql.NullTime `json:"updated_at"`
+	ID          int32        `json:"id"`
+	Name        string       `json:"name"`
+	ProductCode string       `json:"product_code"`
+	Description string       `json:"description"`
+	Categories  string       `json:"categories"`
+	Binlocation string       `json:"binlocation"`
+	Stock       int32        `json:"stock"`
+	Price       string       `json:"price"`
+	CreatedAt   sql.NullTime `json:"created_at"`
+	UpdatedAt   sql.NullTime `json:"updated_at"`
 }

@@ -11,6 +11,7 @@ import (
 	"warehouse-inventory-backend/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -19,7 +20,6 @@ func connectToDatabase() (*sql.DB, error) {
 	password := os.Getenv("DB_PASSWORD")
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
-
 	connectionString := fmt.Sprintf("postgres://%s:%s@%s:%s/inventorydb?sslmode=disable", username, password, host, port)
 
 	database, err := sql.Open("postgres", connectionString)
@@ -31,6 +31,7 @@ func connectToDatabase() (*sql.DB, error) {
 }
 func main() {
 	// Connect to database
+	godotenv.Load()
 	database, err := connectToDatabase()
 	if err != nil {
 		log.Fatal("failed to connect to database", err)
@@ -54,6 +55,21 @@ func main() {
 	// Create a new Gin router
 	r := gin.Default()
 
+	// Add CORS middleware
+	r.Use(func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "http://localhost:5173")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		c.Header("Access-Control-Allow-Credentials", "true")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	})
+
 	// Hello world endpoint
 	r.GET("/", helloHandler.GetHello)
 
@@ -63,6 +79,7 @@ func main() {
 	// Inventory endpoints
 	inventory := r.Group("/inventory")
 	{
+		fmt.Println("Inventory endpoint")
 		inventory.GET("", inventoryHandler.GetAllItems) // GET /inventory
 		// inventory.GET("/:id", inventoryHandler.GetItemByID)             // GET /inventory/:id
 		// inventory.POST("", inventoryHandler.CreateItem)                 // POST /inventory

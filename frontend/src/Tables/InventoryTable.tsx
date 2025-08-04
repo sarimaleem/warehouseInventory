@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import BaseTable from "../components/BaseTable.tsx";
 
 export default function BaseTableInventoryTable() {
@@ -164,14 +165,30 @@ export default function BaseTableInventoryTable() {
     },
   ];
 
+  const [data, setData] = useState<{ items: Record<string, string>[] }>({ items: [] });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/inventory");
+        const data = await response.json();
+        setData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching inventory data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
   const columns: { key: string; name: string; width: number }[] = [
-    { key: "productCode", name: "Product Code", width: 250 },
+    { key: "product_code", name: "Product Code", width: 250 },
     { key: "description", name: "Description", width: 250 },
-    { key: "catagories", name: "Catagories", width: 200 },
+    { key: "categories", name: "Categories", width: 200 },
     { key: "binlocation", name: "Bin Location", width: 200 },
     { key: "stock", name: "Stock", width: 200 },
     { key: "price", name: "Price", width: 200 },
   ];
 
-  return <BaseTable rows={rows} columns={columns} />;
+  return <BaseTable rows={data.items || []} columns={columns} />;
 }

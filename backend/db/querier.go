@@ -9,14 +9,7 @@ import (
 )
 
 type Querier interface {
-	CreateInventory(ctx context.Context, arg CreateInventoryParams) (Inventory, error)
-	DeleteInventory(ctx context.Context, id int32) error
-	GetInventory(ctx context.Context, id int32) (Inventory, error)
-	GetInventoryByName(ctx context.Context, name string) (Inventory, error)
-	GetInventoryQuantity(ctx context.Context) ([]int32, error)
-	ListInventory(ctx context.Context) ([]Inventory, error)
-	UpdateInventory(ctx context.Context, arg UpdateInventoryParams) (Inventory, error)
-	UpdateInventoryQuantity(ctx context.Context, arg UpdateInventoryQuantityParams) (Inventory, error)
+	GetAllItems(ctx context.Context) ([]Inventory, error)
 }
 
 var _ Querier = (*Queries)(nil)

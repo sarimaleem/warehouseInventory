@@ -69,6 +69,7 @@ export default function BaseTable({ columns, rows }: BaseTableProps) {
     }
   }, []);
 
+
   return (
     <ScrollSyncProvider>
       <div ref={divRef} className={`flex h-full flex-col w-full  `}>

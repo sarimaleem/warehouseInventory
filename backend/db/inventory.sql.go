@@ -9,113 +9,13 @@ import (
 	"context"
 )
 
-const createInventory = `-- name: CreateInventory :one
-INSERT INTO inventory (
-    name, quantity
-) VALUES (
-    $1, $2
-)
-RETURNING id, name, quantity, created_at, updated_at
-`
-
-type CreateInventoryParams struct {
-	Name     string `json:"name"`
-	Quantity int32  `json:"quantity"`
-}
-
-func (q *Queries) CreateInventory(ctx context.Context, arg CreateInventoryParams) (Inventory, error) {
-	row := q.db.QueryRowContext(ctx, createInventory, arg.Name, arg.Quantity)
-	var i Inventory
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Quantity,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
-const deleteInventory = `-- name: DeleteInventory :exec
-DELETE FROM inventory
-WHERE id = $1
-`
-
-func (q *Queries) DeleteInventory(ctx context.Context, id int32) error {
-	_, err := q.db.ExecContext(ctx, deleteInventory, id)
-	return err
-}
-
-const getInventory = `-- name: GetInventory :one
-SELECT id, name, quantity, created_at, updated_at FROM inventory
-WHERE id = $1 LIMIT 1
-`
-
-func (q *Queries) GetInventory(ctx context.Context, id int32) (Inventory, error) {
-	row := q.db.QueryRowContext(ctx, getInventory, id)
-	var i Inventory
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Quantity,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
-const getInventoryByName = `-- name: GetInventoryByName :one
-SELECT id, name, quantity, created_at, updated_at FROM inventory
-WHERE name = $1 LIMIT 1
-`
-
-func (q *Queries) GetInventoryByName(ctx context.Context, name string) (Inventory, error) {
-	row := q.db.QueryRowContext(ctx, getInventoryByName, name)
-	var i Inventory
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Quantity,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
-const getInventoryQuantity = `-- name: GetInventoryQuantity :many
-SELECT quantity FROM inventory
-`
-
-func (q *Queries) GetInventoryQuantity(ctx context.Context) ([]int32, error) {
-	rows, err := q.db.QueryContext(ctx, getInventoryQuantity)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []int32{}
-	for rows.Next() {
-		var quantity int32
-		if err := rows.Scan(&quantity); err != nil {
-			return nil, err
-		}
-		items = append(items, quantity)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const listInventory = `-- name: ListInventory :many
-SELECT id, name, quantity, created_at, updated_at FROM inventory
+const getAllItems = `-- name: GetAllItems :many
+SELECT id, name, product_code, description, categories, binlocation, stock, price, created_at, updated_at FROM inventory
 ORDER BY created_at DESC
 `
 
-func (q *Queries) ListInventory(ctx context.Context) ([]Inventory, error) {
-	rows, err := q.db.QueryContext(ctx, listInventory)
+func (q *Queries) GetAllItems(ctx context.Context) ([]Inventory, error) {
+	rows, err := q.db.QueryContext(ctx, getAllItems)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +26,12 @@ func (q *Queries) ListInventory(ctx context.Context) ([]Inventory, error) {
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
-			&i.Quantity,
+			&i.ProductCode,
+			&i.Description,
+			&i.Categories,
+			&i.Binlocation,
+			&i.Stock,
+			&i.Price,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 		); err != nil {
@@ -141,55 +46,4 @@ func (q *Queries) ListInventory(ctx context.Context) ([]Inventory, error) {
 		return nil, err
 	}
 	return items, nil
-}
-
-const updateInventory = `-- name: UpdateInventory :one
-UPDATE inventory
-SET name = $2, quantity = $3, updated_at = CURRENT_TIMESTAMP
-WHERE id = $1
-RETURNING id, name, quantity, created_at, updated_at
-`
-
-type UpdateInventoryParams struct {
-	ID       int32  `json:"id"`
-	Name     string `json:"name"`
-	Quantity int32  `json:"quantity"`
-}
-
-func (q *Queries) UpdateInventory(ctx context.Context, arg UpdateInventoryParams) (Inventory, error) {
-	row := q.db.QueryRowContext(ctx, updateInventory, arg.ID, arg.Name, arg.Quantity)
-	var i Inventory
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Quantity,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
-const updateInventoryQuantity = `-- name: UpdateInventoryQuantity :one
-UPDATE inventory
-SET quantity = $2, updated_at = CURRENT_TIMESTAMP
-WHERE id = $1
-RETURNING id, name, quantity, created_at, updated_at
-`
-
-type UpdateInventoryQuantityParams struct {
-	ID       int32 `json:"id"`
-	Quantity int32 `json:"quantity"`
-}
-
-func (q *Queries) UpdateInventoryQuantity(ctx context.Context, arg UpdateInventoryQuantityParams) (Inventory, error) {
-	row := q.db.QueryRowContext(ctx, updateInventoryQuantity, arg.ID, arg.Quantity)
-	var i Inventory
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Quantity,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
 }
